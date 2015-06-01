@@ -1,22 +1,22 @@
 =begin
   
 #1. create user
-curl -X POST -H "Content-Type:application/json" -d "{\"username\": \"api_ms\", \"password\": \"123456789q\", \"firstName\": \"Api\", \"lastName\": \"Master\", \"email\": \"apimaster@venzee.com\"}"  https://api-qa.venzee.com/api/users
+curl -X POST -H "Content-Type:application/json" -d "{\"username\": \"<user>\", \"password\": \"<pwd>\", \"firstName\": \"Api\", \"lastName\": \"Master\", \"email\": \"apimaster@venzee.com\"}"  https://api-qa.venzee.com/api/users
 
 #2. get token
-curl -u "5944357967603171000:llPL9N5Du7HmG5JHdgbTrV" --data "grant_type=password&username=api_ms&password=123456789q" -i https://api-qa.venzee.com/oauth/token
+curl -u "<id>:<secret>" --data "grant_type=password&username=<user>&password=<pwd>" -i https://api-qa.venzee.com/oauth/token
 
 #3. get authenticated user
-curl -X GET -H "Authorization: Bearer oLizwsFlEbzkLjjXRr7sfT9JGhwsIY8p"   -i https://api-qa.venzee.com/api/user
+curl -X GET -H "Authorization: Bearer <token>"   -i https://api-qa.venzee.com/api/user
 
 #4. create company
-curl -X POST -H "Authorization: Bearer oLizwsFlEbzkLjjXRr7sfT9JGhwsIY8p"  -d "name=walmart&description=sellprodcut&logo=s3url" -i https://api-qa.venzee.com/api/orgs
+curl -X POST -H "Authorization: Bearer <token>"  -d "name=walmart&description=sellprodcut&logo=s3url" -i https://api-qa.venzee.com/api/orgs
 
 #5. get the company by company name, 'walmart' the the company name, in the /api/orgs/{orgname}
-curl -X GET -H "Authorization: Bearer oLizwsFlEbzkLjjXRr7sfT9JGhwsIY8p"   -i https://api-qa.venzee.com/api/orgs/walmart
+curl -X GET -H "Authorization: Bearer <token>"   -i https://api-qa.venzee.com/api/orgs/walmart
 
 #6. get the companies the authenticated user belongs to
-curl -X GET -H "Authorization: Bearer oLizwsFlEbzkLjjXRr7sfT9JGhwsIY8p"   -i https://api-qa.venzee.com/api/user/orgs
+curl -X GET -H "Authorization: Bearer <token>"   -i https://api-qa.venzee.com/api/user/orgs
 
 =end
 
@@ -26,11 +26,11 @@ require 'json'
 @data = ""
 @access_token = ""
 
-CLIENT_ID = "5944357967603171000"
-CLIENT_SECRET = "llPL9N5Du7HmG5JHdgbTrV"
+CLIENT_ID = "<id>"
+CLIENT_SECRET = "<secret>"
 
 def get_access_token(username, password)
-  url  = "https://5944357967603171000:llPL9N5Du7HmG5JHdgbTrV@api-qa.venzee.com/oauth/token"
+  url  = "https://<id>:<secret>@api-qa.venzee.com/oauth/token"
   data = {
           :username => username,
           :password => password,
@@ -134,8 +134,8 @@ end
 
 def push_to_shopify(data)
 
-  api_key = "e2a15973ca0a9d78cf894070c72b2bfc"
-  pwd = "6a60187e715876795962e808d418cd61"
+  api_key = "<id>"
+  pwd = "<secret>"
 
   shop_url = "https://#{api_key}:#{pwd}@venzee.myshopify.com/admin/products.json"
 
@@ -185,7 +185,7 @@ end
 
 ########################################################################################################
 
-@access_token = get_access_token("api_ms", "123456789q")
+@access_token = get_access_token("<user>", "<pwd>")
 
 #get_authenticated_user(@access_token)
 #create_company(@access_token)
