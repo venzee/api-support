@@ -11,12 +11,12 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
 /*
 * Operational modes (development|sandbox)
-* [sandbox], 		Sandbox URL 	: https://sandbox.venzee.com/
-* [development]		Development URL : https://clay-api-0c-dev-pdx.venzee.com/
+* [sandbox], 		Sandbox URL 	: https://api-sandbox.venzee.com/
+* [development]		Development URL : https://api-dev.venzee.com/
 */
-define('OPERATIONAL_MODE', 	'development');
+define('OPERATIONAL_MODE', 	'sandbox');
 define('CLI_MODE', 			false);
-define('BASE_URL', 	   		'https://clay-api-0c-dev-pdx.venzee.com/');
+define('BASE_URL', 	   		'https://api-sandbox.venzee.com/');
 
 $appID 				= '<YOUR_APP_ID_HERE>';
 $appSecret 			= '<YOUR_APP_SECRET_HERE>';

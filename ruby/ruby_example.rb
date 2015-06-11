@@ -4,8 +4,8 @@ require 'json'
 
 @access_token = ""
 
-CLIENT_ID = "757156d18671d155e449d0223311f4d6"
-CLIENT_SECRET = "0e07d1017c47f116201a271085dc3a84a16ee442"
+CLIENT_ID = "<YOUR_CLIENT_ID>"
+CLIENT_SECRET = "<YOUR_CLIENT_SECRET>"
 
 def get_access_token()
   url  = "https://api-qa.venzee.com/api/app/token" 
