@@ -18,29 +18,23 @@ public class App
     {
       try {
         
-        String USERNAME = "<SET USERNAME>";
-        String PASSWORD = "<SET PASSWORD>";
+
         String API_ID = "<SET APP_ID>";
         String API_PASSWORD = "<SET APP_PASSWORD>";
         String END_POINT = "https://sandbox.venzee.com";
           
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("username", USERNAME);
+        jsonObject.put("id", API_ID);
         jsonObject.put("password", PASSWORD);
-        jsonObject.put("grant_type", "password");
   
         System.out.println(jsonObject.toString());
         String input = jsonObject.toString();
  
-        Client client = Client.create();    
+        Client client = Client.create();
        
-        String auth = new String(Base64.encode(API_ID + ":" + API_PASSWORD));
-
-        //client.addFilter(new HTTPBasicAuthFilter(API_ID, API_PASSWORD));
-
-        WebResource resource = client.resource(END_POINT + "/oauth/token");    
-        ClientResponse response = resource.header("Authorization", "Basic " + auth)
-          .type("application/json").accept("application/json").post(ClientResponse.class, input);
+        WebResource resource = client.resource(END_POINT + "/app/token");    
+        ClientResponse response = resource.type("application/json")
+            .accept("application/json").post(ClientResponse.class, input);
         
         System.out.println("Status response:" +  response.toString());
         if(response.getStatus() == 200){
@@ -51,7 +45,7 @@ public class App
             System.out.println("Token: " +  token );
             getUserInfo(token);
             
-        } else System.out.println("Somthing went wrong..!");        
+        } else System.out.println("Something went wrong..!");        
     
        
       } catch (Exception e) {
