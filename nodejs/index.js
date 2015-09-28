@@ -10,13 +10,14 @@ var DOMAIN = "https://URL_API";
 // get token with user credentials and app keys
 var getToken = function(next){
  
-  var data = {
+  var credentials = {
     "id": APP_KEY,
     "secret" : APP_SECRET,
   };
 
   var options = {
-    url : DOMAIN + "/app/token"
+    url : DOMAIN + "/app/token",
+    json: credentials
   };
 
   var callback = function (err, response, body){    
