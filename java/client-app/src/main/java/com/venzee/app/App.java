@@ -21,7 +21,7 @@ public class App
 
         String API_ID = "<SET APP_ID>";
         String API_PASSWORD = "<SET APP_PASSWORD>";
-        String END_POINT = "https://sandbox.venzee.com";
+        String END_POINT = "https://api-sandbox.venzee.com";
           
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", API_ID);
