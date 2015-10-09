@@ -1,6 +1,6 @@
 var client = require("request");
 
-var URL_API = "sandbox.venzee.com"
+var URL_API = "api-sandbox.venzee.com"
 var APP_KEY = "<SET APP_ID>";
 var APP_SECRET = "<SET APP_PASSWORD>";
 
@@ -11,13 +11,13 @@ var DOMAIN = "https://URL_API";
 var getToken = function(next){
  
   var credentials = {
-    "id": APP_KEY,
-    "secret" : APP_SECRET,
+    id: APP_KEY,
+    secret : APP_SECRET,
   };
 
   var options = {
     url : DOMAIN + "/app/token",
-    json: credentials
+    form: credentials
   };
 
   var callback = function (err, response, body){    
