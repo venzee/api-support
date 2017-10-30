@@ -123,43 +123,6 @@ def get_product_list(token, company_name, collection_name)
 end
 
 
-def push_to_shopify(data)
-
-  # Example how to push data to Shopify.  Please make sure to have an account on shopify then replace the api KEY, PASSWORD and name of your shopify website (currently "<my_store_name>.myshopify.com")
-  api_key = "<id>"
-  pwd = "<secret>"
-
-  shop_url = "https://#{api_key}:#{pwd}@<my_store_name>.myshopify.com/admin/products.json"
-
-  response = RestClient.post(shop_url, data, {:accept => :json})
-
-  # Show the response code after sending data to Shopify
-  #puts "\nResult Code : " + response.code.to_s
-  #parsed_data = JSON.parse(response)
-  #puts JSON.pretty_generate(parsed_data)
-
-end
-
-
-def transform_for_shopify(raw)
-
-  # Example how to take the raw data from Venzee and map it to shopify field.  In this example, I'm using only the name of the product.  PLx refer to Shopify API doc for more information.
-  data3 = {
-    product: {
-      title: raw["name"],
-      body_html: "<strong>From Venzee!<\/strong>",
-      vendor: "AcmeStore",
-      product_type: "shirts",
-    }
-  }
-
-  return data3
-
-end
-
-
-
-
 
 
 ########################################################################################################
@@ -170,20 +133,6 @@ get_authenticated_user(@access_token)
 get_collection_list(@access_token, "msylvestre-corp")
 show_product_list(@access_token, "msylvestre-corp", "api-curl-created")
 
-
-
-# Example function how to push the information from Venzee to Shopify.  This code is provided as-is and for development only.
-
-# Get the product list
-#raw = get_product_list(@access_token, "api-corp", "acme")
-
-# Let the user know how much product must be pushed
-#puts "\n>>> Pushing " + raw.length.to_s + " products to your Shopify store..."
-
-# With Shopify, you can push only 1 product at the time through their API so a good'ol FOR will do the job.
-#for i in 0..raw.length - 1
-#  push_to_shopify(transform_for_shopify(raw[i]))
-#end
 
 puts "\n>>> DONE !"
 

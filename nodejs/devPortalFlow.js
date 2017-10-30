@@ -87,6 +87,41 @@ var getCurrentOrgs  = function(token){
 }
 
 
+
+var createProductList = function (token) {
+  
+  // REF : http://venzee-api-qa.us-west-2.elasticbeanstalk.com/explorer/#!//createCollectionViaPost
+
+  // TODO : Define 'recordSrcMapping' & 'recordSrcAttributes'
+
+  var orgname         = "payonscombule";
+  var productListInfo = '{ "name": "TestCollection3", "currency": "USD" }';
+
+  var options = {
+    url: URL_API + '/api/orgs/' + orgname + '/collections',
+    auth: { bearer: token },
+    headers: { "Content-Type": "application/json" },
+    body: productListInfo
+  };
+  
+  var callback = function (err, response, body){    
+
+    if (!err && response.statusCode === 200){
+      console.log("==== CREATE PRODUCT LIST ====");
+      console.log(JSON.stringify(JSON.parse(body), null, 4));
+    }
+    else {
+      console.log("ERROR: " + err);
+      console.log(response.body);
+    }
+  };
+
+  client.post(options, callback);  
+}
+
+
+
+
 // ## MAIN
 var main = function(){
   login()
@@ -98,12 +133,41 @@ if (require.main === module) {
     getToken(function(err, resp){
 
       // getCurrentUser 
-      getCurrentUserInfo(resp.access_token);
-      getCurrentOrgs(resp.access_token);
+      //getCurrentUserInfo(resp.access_token);
+      //getCurrentOrgs(resp.access_token);
+
+      createProductList(resp.access_token);
+      //createProduct(resp.access_token);
 
     });
 }
 
 
+/* ================================================================
+   PROJECT DEV PORTAL
+
+  - [auth] Get token
+  - [auth] Update token
+
+  - [profile] Get current user 
+  - [profile] Get current org
+
+  - [import] Create a product list
+  - [import] Update a product list
+  - [import] Delete a product list
+
+  - [import] Create a product
+  - [import] Update a product
+  - [import] Delete a product
+
+  - [export] Get the product lists
+  - [export] Get a products list
+  - [export] Get the list of product
+  - [export] Get a product
+  - [export] Download file
+  - [export] Download images
+
+
+  ================================================================ */
 
 
