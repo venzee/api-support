@@ -16,7 +16,6 @@ Edit the file ruby_example.rb and set the values for :
 - URL (multiple url to adjust, depending on your need)
 - CLIENT_ID
 - CLIENT_SECRET
-- Shopify Store name
 
 
 RUNNING

@@ -28,7 +28,7 @@ var getToken = function(next){
       next(null, resp);
     } 
     else {
-      console.log("ERROR: " + err.toString());
+      console.log("ERROR: " + err);
       next(true);
     }
   };
