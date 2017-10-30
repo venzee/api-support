@@ -95,7 +95,7 @@ var getCurrentOrgs  = function(token){
 
 var createProductList = function (token) {
   
-  // REF : http://venzee-api-qa.us-west-2.elasticbeanstalk.com/explorer/#!//createCollectionViaPost
+  // REF : /explorer/#!//createCollectionViaPost
 
   // TODO : Define 'recordSrcMapping' & 'recordSrcAttributes'
 
@@ -150,31 +150,35 @@ if (require.main === module) {
 }
 
 
-/* ================================================================
+/* ==============================================================================================
    PROJECT DEV PORTAL
 
-  - [auth] Get token
-  - [auth] Update token
+  
+    END POINT                         REFERENCE                               STATUS
+    ---------------------------------------------------------------------------------------
 
-  - [profile] Get current user 
-  - [profile] Get current org
+  - [auth] Get token                  explorer/#!//createAccessToken          DONE
+  - [auth] Update token               ?                                       todo
 
-  - [import] Create a product list
-  - [import] Update a product list
-  - [import] Delete a product list
+  - [profile] Get current user        explorer/#!//getAuthenticatedUser       DONE
+  - [profile] Get current org         explorer/#!//getOrgs                    DONE
 
-  - [import] Create a product
-  - [import] Update a product
-  - [import] Delete a product
+  - [import] Create a product list    explorer/#!//createCollectionViaPost    In Progress
+  - [import] Update a product list                                            todo
+  - [import] Delete a product list                                            todo
 
-  - [export] Get the product lists
-  - [export] Get a products list
-  - [export] Get the list of product
-  - [export] Get a product
-  - [export] Download file
-  - [export] Download images
+  - [import] Create a product                                                 todo
+  - [import] Update a product                                                 todo
+  - [import] Delete a product                                                 todo
+
+  - [export] Get the product lists                                            todo
+  - [export] Get a products list                                              todo
+  - [export] Get the list of product                                          todo
+  - [export] Get a product                                                    todo
+  - [export] Download file                                                    todo
+  - [export] Download images                                                  todo
 
 
-  ================================================================ */
+  */
 
 
