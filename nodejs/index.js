@@ -1,8 +1,8 @@
 var client = require("request");
 
 var URL_API = "https://api-qa.venzee.com"
-var APP_KEY = "9f0fa703f25f049c1fa9a44fc798294e";
-var APP_SECRET = "a2015ed7f6e05ba0016f90ebbddf625f1c2dd693";
+var APP_KEY = "";
+var APP_SECRET = "";
 
 
 
