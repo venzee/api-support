@@ -1,8 +1,8 @@
 var client = require("request");
 
 const URL_API    = "https://api-qa.venzee.com"
-const APP_KEY    = process.env.APP_KEY    || "9f0fa703f25f049c1fa9a44fc798294e";  // Set the environement variable at the command line
-const APP_SECRET = process.env.APP_SECRET || "a2015ed7f6e05ba0016f90ebbddf625f1c2dd693";
+const APP_KEY    = process.env.APP_KEY    || "";  // Set the environement variable at the command line
+const APP_SECRET = process.env.APP_SECRET || "";
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
