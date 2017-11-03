@@ -33,7 +33,7 @@ var getToken = function(next){
     if (!err && response.statusCode === 200){
       var resp = JSON.parse(body);
       console.log(JSON.stringify(resp, null, 4));
-      next(null, resp);
+      next(null, resp.access_token);
     } 
     else {
       console.log("ERROR: " + err);
@@ -64,7 +64,7 @@ var getCurrentUserInfo  = function(token){
   var options = {
     url: URL_API + "/api/user",
     auth: {
-      bearer: token + "1"
+      bearer: token
     }
   };
 
@@ -123,12 +123,14 @@ var getCurrentOrgs  = function(token){
 
 var createProductList = function (token, next) {
   
-  /* DOCUMENTATION
+  /* DOCUMENTATION - //createCollectionViaPost
   *  
-  *  - Creating product is fine
-  *  - Need to refactor the endpoint to pass the ImageColumn and ImageType.  They are currently ignored.  
-  *    This could only be specified when mapping a spreadsheet right now, which need an SWF taskId...
-  *
+  *  - Creating product list work but it's incomplete, and need cleanup
+  *  - ADD : ImageColumn & ImageType
+  *    + Need to refactor the endpoint to pass the ImageColumn and ImageType.  They are currently ignored.  
+  *      This could only be specified when 'mapping a spreadsheet' right now, which need an SWF taskId...
+  *  - REMOVE : Currency & Map
+  *    + If removing the field are too risky, at least, make the currency optional, not mandatory
   */
 
 
@@ -172,10 +174,12 @@ var createProductList = function (token, next) {
 
 var createProduct = function(token) {
 
-  /* DOCUMENTATION
+  /* DOCUMENTATION - //createNewRecordViaPost
   *  
-  *  - Creating product is fine
-  *  - Need to test passing imageURL at the same time
+  *  - Creating product works fine
+  *  - REMOVE : Cost & Map
+  *  - TO TEST: Passing imageURL at the same time (but need to create those field
+  *    manually in Dynamo or test with an exiting collection !)
   *
   */
 
@@ -221,10 +225,9 @@ var createProduct = function(token) {
 
 var createProductInBulk = function(token) {
 
-  /* DOCUMENTATION
+  /* DOCUMENTATION - //createUpdateBulkRecords
   *  
-  *  - Creating product is fine BUT the API crash and return a 402.  Carlos is fixing that.  A param is missing when calling a function.
-  *  - Need to find the way to send ImageURL
+  *  - Need to test the way to send ImageURL
   *
   */
 
@@ -300,11 +303,11 @@ var createProductInBulk = function(token) {
 
 var updateProductList = function(token) {
 
-  /* DOCUMENTATION
+  /* DOCUMENTATION - //updateOrgCollection
   *  
-  *  - Update product listis fine
-  *  - Need to refactor the endpoint to pass the ImageType.  They are currently ignored.  
-    *
+  *  - Update product list works fine
+  *  - ADD : ImageType.  You should be able to update the type (probably only if there's no transfo) 
+  *
   */
 
 
@@ -348,6 +351,49 @@ var updateProductList = function(token) {
 
 
 
+var deleteProductList = function(token) {
+
+  /* DOCUMENTATION - //deleteOrgCollection
+  *  
+  *  - Update product list works fine
+  *
+  */
+
+
+  var orgname    = "payonscombule";
+  var collection = 'testcollection';
+
+  var productListInfo = { 
+    name: "testcollection7",
+    uploadingErrorExists: true
+  };
+
+
+  var options = {
+    url: URL_API + '/api/collections/' + orgname + '/' + collection,
+    auth: { bearer: token },
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(productListInfo)
+  };
+  
+  var callback = function (err, response, body){    
+
+    console.log("==== DELETE PRODUCT LIST ====");
+
+    if (!err && response.statusCode === 200){
+      console.log(JSON.stringify(JSON.parse(body), null, 4));
+    }
+    else {
+      console.log("ERROR: " + err);
+      console.log("BODY: \n" + JSON.stringify(JSON.parse(response.body), null, 4));
+    }
+  };
+
+  client.delete(options, callback);  
+
+}
+
+
 
 
 
@@ -362,24 +408,26 @@ var main = function(){
 if (require.main === module) {
 
     // Get authentication token
-    getToken(function(err, res){
+    getToken(function(err, access_token){
 
       if (!err) {
         
-        //getCurrentUserInfo(res.access_token);
-        //getCurrentOrgs(res.access_token);
+        getCurrentUserInfo(access_token);
+        //getCurrentOrgs(access_token);
 
-        createProductList(res.access_token, function(err) { 
+       /* createProductList(access_token, function(err) { 
         
           if (!err) {
-            createProduct(res.access_token);
-            createProductInBulk(res.access_token);
+            createProduct(access_token);
+            createProductInBulk(access_token);
 
-            //updateProductList(res.access_token)
+            //updateProductList(access_token)
 
           }
 
-        });
+        });*/
+
+        deleteProductList(access_token)
 
       }
 
