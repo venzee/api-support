@@ -58,9 +58,48 @@ exports.createList = function(token, listName, next) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.getAllLists = function(token, next) {
-  // TODO
-  console.log("getAllLists!")
-  next();
+
+  /* DOCUMENTATION
+  *
+  *  - Work as expected
+  *  
+  */
+
+  var params = {
+  	type: 'source',
+  	image: false,
+  	extras: false
+  }
+
+  var options = {
+    url: URL_API + "/api/orgs/" + ORGNAME + "/collections",
+    auth: { bearer: token },
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(params)
+
+  };
+
+  var callback = function (err, response, body){    
+    
+    console.log("==== ALL PRODUCT LISTS ====");    
+
+    if (!err && response.statusCode === 200){
+      //console.log(JSON.stringify(JSON.parse(body), null, 4));
+      lists = JSON.parse(body);
+      
+      for (var x = 0; x < lists.length; x++) {
+      	console.log("  " + (x+1) + ". " + lists[x].name);	
+      }
+      next();
+    }
+    else {
+      console.log("ERROR: " + err);
+      console.log("BODY: \n" + JSON.stringify(response, null, 4));
+      next(true);
+    }
+  };
+
+  client.get(options, callback);
 }
 
 

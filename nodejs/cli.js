@@ -32,8 +32,8 @@ var bearerToken;
   - [import] Update a product         //updateRecordByID                            todo 
   - [import] Delete a product         n/a                                           DONE
 
-  - [export] Get the product lists    //getOrgCollectionList                        In Progress
-  - [export] Get a products list      //getOrgCollection                            todo
+  - [export] Get the product lists    //getOrgCollectionList                        DONE
+  - [export] Get a products list      //getOrgCollection                            In Progress
   - [export] Get the list of product  //getOwnedRecords                             todo
   - [export] Get a product            //getRecordByID                               todo
 
@@ -142,6 +142,17 @@ vorpal
   .action(function(args, callback) {
     this.log('Getting lists...');
     productList.getAllLists(bearerToken, function(err) {
+      callback();
+    }); 
+  });
+
+vorpal
+  .command('getList [name]', '[gl] Get a the product list.')
+  .alias('gl')
+  .action(function(args, callback) {
+    var listName = args.name || "mylist"
+    this.log('Getting list' + listName + '...');
+    productList.getList(bearerToken, listName, function(err) {
       callback();
     }); 
   });

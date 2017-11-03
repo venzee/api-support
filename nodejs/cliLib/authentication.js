@@ -5,6 +5,7 @@ const APP_KEY    = process.env.APP_KEY    || "";  // Set the environement variab
 const APP_SECRET = process.env.APP_SECRET || "";
 
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.getToken = function(next){
 
