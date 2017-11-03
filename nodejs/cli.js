@@ -1,8 +1,59 @@
-var cliFunc = require('./functionCli.js');
-const vorpal = require('vorpal')();
- 
+var vorpal  = require('vorpal')();
+
+var auth        = require("./cliLib/authentication.js");
+var user        = require("./cliLib/user.js");
+var productList = require("./cliLib/productList.js");
+var product     = require("./cliLib/product.js");
+var download    = require("./cliLib/download.js");
+
 var bearerToken;
 
+
+
+/* ==============================================================================================
+   PROJECT DEV PORTAL
+   ==============================================================================================
+  
+    END POINT                         REFERENCE                                    STATUS
+    ---------------------------------------------------------------------------------------------
+
+  - [auth] Get token                  //createAccessToken                           DONE
+  - [auth] Update token               /api/refresh                                  todo
+
+  - [profile] Get current user        //getAuthenticatedUser                        DONE
+  - [profile] Get current org         //getOrgs                                     DONE
+
+  - [import] Create a product list    //createCollectionViaPost                     DONE
+  - [import] Update a product list    //updateOrgCollection                         DONE
+  - [import] Delete a product list    //deleteOrgCollection                         DONE
+
+  - [import] Create a product         //createNewRecordViaPost                      DONE 
+                                      //createUpdateBulkRecords                     DONE
+  - [import] Update a product         //updateRecordByID                            todo 
+  - [import] Delete a product         n/a                                           DONE
+
+  - [export] Get the product lists    //getOrgCollectionList                        In Progress
+  - [export] Get a products list      //getOrgCollection                            todo
+  - [export] Get the list of product  //getOwnedRecords                             todo
+  - [export] Get a product            //getRecordByID                               todo
+
+  - [export] Download file            //postExportCollectionRecords                 todo
+                                      //postExportSharedCollectionRecords           todo
+                                      //postExportTransformedCollectionRecords      todo
+                                      //postExportTransformedSharedCollectionRecords todo
+
+  - [export] Download images          //exportCollectionImages                      todo
+                                      //exportSharedCollectionImages                todo
+                                      //exportTransformedSharedCollectionImages     todo
+                                      //exportTransformedCollectionImages           todo
+
+
+  */
+
+
+
+
+// Remove the Exit command to rebuild it with multiple alias
 var exit = vorpal.find('exit');
 exit.remove();
 
@@ -15,13 +66,14 @@ vorpal
   })
 
 
+// User commands
 vorpal
   .command('getToken', '[t] Get getToken from API key & secret in env variable.')
   .alias('t')
   .alias('gt')
   .action(function(args, callback) {
     this.log('Getting token...');
-    cliFunc.getToken(function(err, token) {
+    auth.getToken(function(err, token) {
     	bearerToken = token;
     	console.log('bearerToken: ' + bearerToken);
     	callback();
@@ -33,7 +85,7 @@ vorpal
   .alias('r')
   .action(function(args, callback) {
     this.log('Refreshing the token...');
-    cliFunc.refreshToken(bearerToken, function(err, newBearerToken) {
+    auth.refreshToken(bearerToken, function(err, newBearerToken) {
       bearerToken = newBearerToken;
       console.log('New bearerToken: ' + bearerToken);
       callback();
@@ -46,7 +98,7 @@ vorpal
   .alias('go')
   .action(function(args, callback) {
     this.log('Getting organization details...');
-    cliFunc.getCurrentOrg(bearerToken, function(err) {
+    user.getCurrentOrg(bearerToken, function(err) {
       callback();
     }); 
   });
@@ -56,7 +108,7 @@ vorpal
   .alias('gu')
   .action(function(args, callback) {
     this.log('Getting user details...');
-    cliFunc.getCurrentUser(bearerToken, function(err) {
+    user.getCurrentUser(bearerToken, function(err) {
       callback();
     }); 
   });
@@ -68,7 +120,7 @@ vorpal
   .action(function(args, callback) {
   	listName = args.name || "mylist"
     this.log('Creating list ' + listName + "...");
-    cliFunc.createList(bearerToken, listName, function(err) {
+    productList.createList(bearerToken, listName, function(err) {
       callback();
     });	
   });
@@ -79,7 +131,7 @@ vorpal
   .action(function(args, callback) {
   	listName = args.name || "mylist"
     this.log('Updating list ' + listName + "...");
-    cliFunc.updateList(bearerToken, listName, function(err) {
+    productList.updateList(bearerToken, listName, function(err) {
       callback();
     });	
   });
@@ -89,7 +141,7 @@ vorpal
   .alias('gal')
   .action(function(args, callback) {
     this.log('Getting lists...');
-    cliFunc.getAllLists(bearerToken, function(err) {
+    productList.getAllLists(bearerToken, function(err) {
       callback();
     }); 
   });
@@ -100,7 +152,7 @@ vorpal
   .action(function(args, callback) {
   	listName = args.name || "mylist"
     this.log('Deleteing list ' + listName + "...");
-    cliFunc.deleteList(bearerToken, listName, function(err) {
+    productList.deleteList(bearerToken, listName, function(err) {
       callback();
     });	
   });
@@ -113,7 +165,7 @@ vorpal
     productId   = args.id   || "999"
     listName    = args.listName || "mylist";
     this.log('Creating product ' + productName + "...");
-    cliFunc.createProduct(bearerToken, productName, productId, listName, function(err) {
+    product.createProduct(bearerToken, productName, productId, listName, function(err) {
       callback();
     }); 
   });
@@ -126,7 +178,7 @@ vorpal
     productId   = args.id   || "10"
     listName    = args.listName || "mylist";
     this.log('Creating 3 products in bulk from ' + productName + "...");
-    cliFunc.createProductBulk(bearerToken, productName, productId, listName, function(err) {
+    product.createProductBulk(bearerToken, productName, productId, listName, function(err) {
       callback();
     }); 
   });
@@ -137,3 +189,5 @@ vorpal.exec("help");
 vorpal
   .delimiter("\x1b[33mvzApi $ ")
   .show();
+
+
