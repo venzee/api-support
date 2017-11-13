@@ -232,7 +232,6 @@ vorpal
     }); 
   });
 
-
 vorpal
   .command('updateProduct [id] [title]', '[up] Update a Product by id. "myProduct" is the default product')
   .alias('up')
@@ -243,6 +242,38 @@ vorpal
 
     this.log('Updating product id ' + productId + " from list " + listName + "...");
     product.updateProduct(bearerToken, listName, productId, newTitle, function(err) {
+      callback();
+    }); 
+  });
+
+vorpal
+  .command('-----------------------', '--------------------------------------------')
+  .alias('-3')
+  .action(function(args, callback) {
+    callback();
+  });
+
+vorpal
+  .command('dlSourceList [listName]', '[dsl] Download a collection List file. "mylist" is the default list')
+  .alias('dsl')
+  .action(function(args, callback) {
+    listName    = args.listName || "mylist";
+
+    this.log('Downloading product list ' + listName + '...');
+    productList.downloadSourceList(bearerToken, listName, function(err) {
+      callback();
+    }); 
+  });
+
+
+vorpal
+  .command('checkDlStatus [taskId]', '[cds] Check the status of a download task.')
+  .alias('cds')
+  .action(function(args, callback) {
+    taskId    = args.taskId || "X1DN7J798S";
+
+    this.log('Checking download status for task ' + taskId + '...');
+    productList.checkDownloadStatus(bearerToken, taskId, function(err) {
       callback();
     }); 
   });

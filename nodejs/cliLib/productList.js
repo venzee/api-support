@@ -1,4 +1,5 @@
 var client    = require("request");
+var fs        = require('fs');
 
 const URL_API = "https://api-qa.venzee.com"
 const ORGNAME = "payonscombule";
@@ -200,7 +201,7 @@ exports.deleteList = function(token, listName, next) {
 
   /* DOCUMENTATION - //deleteOrgCollection
   *  
-  *  - Update product list works fine
+  *  - Delete product list works fine
   *
   */
 
@@ -237,3 +238,85 @@ exports.deleteList = function(token, listName, next) {
 
   client.delete(options, callback);  
 }
+
+
+exports.downloadSourceList = function(token, listName, next) {
+
+  /* DOCUMENTATION - //postExportCollectionRecords
+  *  
+  *  - Download source product list TBD
+  *
+  */
+
+
+  var collection = listName;
+
+  var productListInfo = { 
+    action: 'exclude',
+    extension: 'csv',
+    recordIds: []
+  };
+
+
+  var options = {
+    url: URL_API + '/api/collections/' + ORGNAME + '/' + collection + '/export/file',
+    auth: { bearer: token },
+    headers: { "Content-Type": "application/binary" },
+    body: JSON.stringify(productListInfo)
+  };
+  
+  var callback = function (err, response, body){    
+
+    console.log("==== DOWNLOAD SOURCE PRODUCT LIST ====");
+
+    if (!err && response.statusCode === 200){
+      console.log(JSON.stringify(JSON.parse(body), null, 4));
+      next()
+    }
+    else {
+      console.log("ERROR: " + err);
+      console.log("BODY: \n" + JSON.stringify(JSON.parse(response.body), null, 4));
+      next(true);
+    }
+  };
+
+  client.post(options, callback) //.pipe(fs.createWriteStream('myProductList.csv'));  
+
+}
+
+
+exports.checkDownloadStatus = function(token, taskId, next) {
+
+
+  /* DOCUMENTATION - //getCollectionProcessStatus
+  *  
+  *  - Swagger UI doesn't work.
+  *  - cURL command : curl -H "Authorization: Bearer gLsZ8rhZqY6M6lwdoBLAzostI5CzrmRK" -i https://api-qa.venzee.com/collections/payonscombule/status/06D98092RH 
+  *                   curl 'https://api-qa.venzee.com/api/collections/payonscombule/acme/export/file' -H 'authorization: Bearer gLsZ8rhZqY6M6lwdoBLAzostI5CzrmRK' -H 'content-type: application/json' --data '{"action":"exclude","extension":"csv","recordIds":[]}'
+  */  
+
+  var options = {
+    url: URL_API + '/api/collections/' + ORGNAME + '/status/' + taskId,
+    auth: { bearer: token },
+    headers: { "Content-Type": "application/json" }
+  };
+  
+  var callback = function (err, response, body){    
+
+    console.log("==== CHECK DOWNLOAD STATUS ====");
+
+    if (!err && response.statusCode === 200){
+      console.log(JSON.stringify(JSON.parse(body), null, 4));
+      next()
+    }
+    else {
+      console.log("ERROR: " + err);
+      console.log("BODY: \n" + JSON.stringify(JSON.parse(response.body), null, 4));
+      next(true);
+    }
+  };
+  console.log(options);
+  client.get(options, callback); 
+
+}
+
