@@ -134,23 +134,123 @@ exports.createProductBulk = function(token, productName, productId, listName, ne
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.getAllProducts = function(token, listName, next) {
-  // TODO
-  console.log("getAllProducts!")
-  next();
+
+  /* DOCUMENTATION - //getOwnedRecords
+  *  
+  *  - Add date format example
+  *
+  */
+
+  var options = {
+    url: URL_API + "/api/collections/" + ORGNAME + "/" + listName + "/records",
+    auth: { bearer: token },
+    headers: { "Content-Type": "application/json" },
+    qs: {
+      offset:0, 
+      limit:50,
+      order: 'desc'  // or asc
+    }
+  };
+
+  var callback = function (err, response, body){    
+    
+    console.log("==== GET ALL PRODUCT FROM A LIST ====");    
+
+    if (!err && response.statusCode === 200){
+      console.log(JSON.stringify(JSON.parse(body), null, 4));
+      next();
+    }
+    else {
+      console.log("ERROR: " + err);
+      console.log("BODY: \n" + JSON.stringify(response, null, 4));
+      next(true);
+    }
+  };
+
+  client.get(options, callback);
+
 }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-exports.getProduct = function(token, productId, listName, next) {
-  // TODO
-  console.log("getProduct!")
-  next();
+exports.getProduct = function(token, listName, productId, next) {
+
+  /* DOCUMENTATION - //getRecordByID
+  *  
+  *  - Improve description of Id : Refers to the "id" of a product (not to be confused with the RecordId)
+  *
+  */
+
+  var options = {
+    url: URL_API + "/api/collections/" + ORGNAME + "/" + listName + "/records/" + productId,
+    auth: { bearer: token },
+    headers: { "Content-Type": "application/json" },
+  };
+
+  var callback = function (err, response, body){    
+    
+    console.log("==== GET PRODUCT ====");    
+
+    if (!err && response.statusCode === 200){
+      console.log(JSON.stringify(JSON.parse(body), null, 4));
+      next();
+    }
+    else {
+      console.log("ERROR: " + err);
+      console.log("BODY: \n" + JSON.stringify(response, null, 4));
+      next(true);
+    }
+  };
+
+  client.get(options, callback);
+
 }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-exports.updateProduct = function(token, productId, productName, listName, next) {
-  // TODO
-  console.log("updateProduct!")
-  next();
+exports.updateProduct = function(token, listName, productId, productName, next) {
+
+  /* DOCUMENTATION - //updateRecordByID
+  *  
+  *  - Improve description of Id : Refers to the "id" of a product (not to be confused with the RecordId)
+  *  - Improve description of customField : Give an example of the payload
+  *  - REMOVE : Name, Cost, Map, videos
+  *
+  */
+
+var productInfo = {
+    customFields : {
+      name: productName,
+      cost: "1996.99", 
+      status: "In Stock", 
+      inventory: "11", 
+      brand: "Acme"
+    }
+  }
+
+
+
+var options = {
+    url: URL_API + "/api/collections/" + ORGNAME + "/" + listName + "/records/" + productId,
+    auth: { bearer: token },
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(productInfo)
+  };
+
+  var callback = function (err, response, body){    
+    
+    console.log("==== UPDATE PRODUCT ====");    
+
+    if (!err && response.statusCode === 200){
+      console.log(JSON.stringify(JSON.parse(body), null, 4));
+      next();
+    }
+    else {
+      console.log("ERROR: " + err);
+      console.log("BODY: \n" + JSON.stringify(response, null, 4));
+      next(true);
+    }
+  };
+
+  client.put(options, callback);
 }

@@ -60,13 +60,17 @@ exports.refreshToken = function(token, next){
   *  
   */
 
+  //curl -X POST -u "9f0fa703f25f049c1fa9a44fc798294e:a2015ed7f6e05ba0016f90ebbddf625f1c2dd693" --data 'refresh_token=DCyyCyOXp0FHMMeAkeuknFrqZetQBnHX&grant_type=refresh_token' -i https://api-qa.venzee.com/oauth/token
+
+  //curl -X POST --data 'refresh_token=DCyyCyOXp0FHMMeAkeuknFrqZetQBnHX&grant_type=refresh_token' -i https://9f0fa703f25f049c1fa9a44fc798294e:a2015ed7f6e05ba0016f90ebbddf625f1c2dd693@api-qa.venzee.com/oauth/token
  
   var currentToken = {
-    refresh_token: token
+    refresh_token: token,
+    grant_type: "refresh_token"
   };
 
   var options = {
-    url : URL_API + "/api/refresh",
+    url : "https://" + APP_KEY + ":" + APP_SECRET + "@api-qa.venzee.com/oauth/token",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(currentToken)
   };

@@ -59,7 +59,7 @@ exports.createList = function(token, listName, next) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.getAllLists = function(token, next) {
 
-  /* DOCUMENTATION
+  /* DOCUMENTATION - //getOrgCollectionList
   *
   *  - Work as expected
   *  
@@ -105,9 +105,42 @@ exports.getAllLists = function(token, next) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.getList = function(token, listName, next) {
-  // TODO
-  console.log("getList!")
-  next();
+
+  /* DOCUMENTATION - //getOrgCollection
+  *
+  *  - Need to clarify what is the "includeExtraInfo" field.  
+  *  - It returned the transformed collection attached to that source
+  */
+
+  var params = {
+  	includeExtraInfo: true
+  }
+
+  var options = {
+    url: URL_API + "/api/collections/" + ORGNAME + "/" + listName,
+    auth: { bearer: token },
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(params)
+
+  };
+
+  var callback = function (err, response, body){    
+    
+    console.log("==== GET PRODUCT LIST ====");    
+
+    if (!err && response.statusCode === 200){
+      console.log(JSON.stringify(JSON.parse(body), null, 4));
+      next();
+    }
+    else {
+      console.log("ERROR: " + err);
+      console.log("BODY: \n" + JSON.stringify(response, null, 4));
+      next(true);
+    }
+  };
+
+  client.get(options, callback);
+
 }
 
 

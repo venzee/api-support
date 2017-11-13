@@ -9,7 +9,6 @@ var download    = require("./cliLib/download.js");
 var bearerToken;
 
 
-
 /* ==============================================================================================
    PROJECT DEV PORTAL
    ==============================================================================================
@@ -18,7 +17,7 @@ var bearerToken;
     ---------------------------------------------------------------------------------------------
 
   - [auth] Get token                  //createAccessToken                           DONE
-  - [auth] Update token               /api/refresh                                  todo
+  - [auth] Update token               /api/refresh                                  In Progress
 
   - [profile] Get current user        //getAuthenticatedUser                        DONE
   - [profile] Get current org         //getOrgs                                     DONE
@@ -29,13 +28,13 @@ var bearerToken;
 
   - [import] Create a product         //createNewRecordViaPost                      DONE 
                                       //createUpdateBulkRecords                     DONE
-  - [import] Update a product         //updateRecordByID                            todo 
+  - [import] Update a product         //updateRecordByID                            DONE 
   - [import] Delete a product         n/a                                           DONE
 
   - [export] Get the product lists    //getOrgCollectionList                        DONE
-  - [export] Get a products list      //getOrgCollection                            In Progress
-  - [export] Get the list of product  //getOwnedRecords                             todo
-  - [export] Get a product            //getRecordByID                               todo
+  - [export] Get a products list      //getOrgCollection                            DONE
+  - [export] Get the list of product  //getOwnedRecords                             DONE
+  - [export] Get a product            //getRecordByID                               DONE
 
   - [export] Download file            //postExportCollectionRecords                 todo
                                       //postExportSharedCollectionRecords           todo
@@ -113,6 +112,12 @@ vorpal
     }); 
   });
 
+vorpal
+  .command('---------------------', '--------------------------------------------')
+  .alias('-1')
+  .action(function(args, callback) {
+    callback();
+  });
 
 vorpal
   .command('createList [name]', '[cl] Create a product list. "mylist" is the default name')
@@ -151,7 +156,7 @@ vorpal
   .alias('gl')
   .action(function(args, callback) {
     var listName = args.name || "mylist"
-    this.log('Getting list' + listName + '...');
+    this.log('Getting list info for ' + listName + '...');
     productList.getList(bearerToken, listName, function(err) {
       callback();
     }); 
@@ -166,6 +171,13 @@ vorpal
     productList.deleteList(bearerToken, listName, function(err) {
       callback();
     });	
+  });
+
+vorpal
+  .command('----------------------', '--------------------------------------------')
+  .alias('-2')
+  .action(function(args, callback) {
+    callback();
   });
 
 vorpal
@@ -188,8 +200,49 @@ vorpal
     productName = args.name || "myProduct";
     productId   = args.id   || "10"
     listName    = args.listName || "mylist";
+
     this.log('Creating 3 products in bulk from ' + productName + "...");
     product.createProductBulk(bearerToken, productName, productId, listName, function(err) {
+      callback();
+    }); 
+  });
+
+vorpal
+  .command('getAllProducts [listName]', '[gap] Get the product that are on a list. "mylist" is the default list')
+  .alias('gap')
+  .action(function(args, callback) {
+    listName    = args.listName || "mylist";
+
+    this.log('Getting products from ' + listName + "...");
+    product.getAllProducts(bearerToken, listName, function(err) {
+      callback();
+    }); 
+  });
+
+vorpal
+  .command('getProduct [id]', '[gp] Get a Product by id. "myProduct" is the default product')
+  .alias('gp')
+  .action(function(args, callback) {
+    productId   = args.id   || "MY44BZTIFK"
+    listName    = args.listName || "mylist";
+
+    this.log('Getting product id ' + productId + " from list " + listName + "...");
+    product.getProduct(bearerToken, listName, productId, function(err) {
+      callback();
+    }); 
+  });
+
+
+vorpal
+  .command('updateProduct [id] [title]', '[up] Update a Product by id. "myProduct" is the default product')
+  .alias('up')
+  .action(function(args, callback) {
+    productId   = args.id       || "MY44BZTIFK"
+    listName    = args.listName || "mylist";
+    newTitle    = args.title    || "My Updated ACME Product"
+
+    this.log('Updating product id ' + productId + " from list " + listName + "...");
+    product.updateProduct(bearerToken, listName, productId, newTitle, function(err) {
       callback();
     }); 
   });
