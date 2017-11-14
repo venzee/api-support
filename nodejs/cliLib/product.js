@@ -103,7 +103,8 @@ exports.createProductBulk = function(token, productName, productId, listName, ne
           brand: "Acme",
         }
       }
-    ]
+    ],
+    isImageFromUrl: false
   }
 
   var options = {

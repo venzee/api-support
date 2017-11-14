@@ -7,7 +7,7 @@ const ORGNAME = "payonscombule";
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.getCurrentOrg = function(token, next) {
 
-  /* DOCUMENTATION
+  /* DOCUMENTATION - //getAuthenticatedUser
   *
   *  - Work as expected
   *  
