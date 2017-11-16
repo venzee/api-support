@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "request": "^2.55.0",
-    "restler": "^3.2.2"
+    "restler": "^3.2.2",
+    "vorpal": "^1.12.0"
   }
 }
